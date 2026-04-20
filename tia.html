@@ -51,6 +51,12 @@
       flex-direction: column;
       min-height: 100dvh;
       padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+      align-items: center;
+    }
+
+    .header, .main {
+      width: 100%;
+      max-width: 420px;
     }
 
     .header {
@@ -243,7 +249,7 @@
     }
 
     .key {
-      aspect-ratio: 1.3;
+      aspect-ratio: 1.8;
       border-radius: 14px;
       border: 1px solid var(--border);
       background: var(--surface);
@@ -261,6 +267,15 @@
       overflow: hidden;
       user-select: none;
       touch-action: manipulation;
+    }
+
+    @media (min-width: 500px) {
+      .key { aspect-ratio: 2.5; font-size: 18px; }
+      .num-value { font-size: 48px; }
+      .hero h1 { font-size: 22px; }
+      .area-btn { padding: 14px 12px; }
+      .area-icon { font-size: 22px; }
+      .send-btn { padding: 14px; font-size: 15px; }
     }
 
     .key:active {
@@ -431,6 +446,10 @@
     let numero = ''
 
     function initSupabase() {
+      if (SUPABASE_URL === 'https://uyilxlqdihrdvrnadvvs.supabase.co') {
+        document.getElementById('config-warning').style.display = 'block'
+        return
+      }
       supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
     }
 
