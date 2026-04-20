@@ -431,10 +431,6 @@
     let numero = ''
 
     function initSupabase() {
-      if (SUPABASE_URL === 'https://uyilxlqdihrdvrnadvvs.supabase.co') {
-        document.getElementById('config-warning').style.display = 'block'
-        return
-      }
       supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
     }
 
