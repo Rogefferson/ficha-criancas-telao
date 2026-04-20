@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kids Call — Mídia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080a0d;
+      --surface: #0f1215;
+      --surface2: #161a1f;
+      --border: rgba(255,255,255,0.07);
+      --border2: rgba(255,255,255,0.13);
+      --text: #f4f4f5;
+      --muted: #52525b;
+      --green: #22d3a5;
+      --green-dim: rgba(34,211,165,0.08);
+      --green-glow: rgba(34,211,165,0.3);
+      --blue: #60a5fa;
+      --blue-dim: rgba(96,165,250,0.08);
+      --blue-glow: rgba(96,165,250,0.3);
+      --font: 'DM Sans', sans-serif;
+      --mono: 'DM Mono', monospace;
+    }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top bar */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 36px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-dot {
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 12px var(--green-glow);
+      animation: breathe 2.5s ease-in-out infinite;
+    }
+
+    @keyframes breathe {
+      0%, 100% { box-shadow: 0 0 8px var(--green-glow); }
+      50% { box-shadow: 0 0 20px var(--green-glow), 0 0 40px rgba(34,211,165,0.15); }
+    }
+
+    .brand-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .status-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 99px;
+      border: 1px solid var(--border2);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--muted);
+    }
+
+    .status-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    .clock {
+      font-family: var(--mono);
+      font-size: 14px;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* Main stage */
+    .stage {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 48px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      opacity: 0;
+      animation: fadeIn 0.6s ease 0.3s forwards;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    .empty-icon {
+      font-size: 48px;
+      display: block;
+      margin-bottom: 16px;
+      opacity: 0.3;
+    }
+
+    .empty-text {
+      font-size: 18px;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    /* Cards grid */
+    .cards-grid {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      max-width: 1200px;
+    }
+
+    .chamada-card {
+      position: relative;
+      border-radius: 28px;
+      overflow: hidden;
+      min-width: 280px;
+      flex: 1;
+      max-width: 480px;
+      animation: cardIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      cursor: default;
+    }
+
+    @keyframes cardIn {
+      from {
+        opacity: 0;
+        transform: scale(0.85) translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .chamada-card.saindo {
+      animation: cardOut 0.35s ease forwards;
+    }
+
+    @keyframes cardOut {
+      to {
+        opacity: 0;
+        transform: scale(0.9) translateY(-12px);
+      }
+    }
+
+    .card-inner {
+      padding: 36px 40px 32px;
+      border: 1px solid;
+      border-radius: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bercario .card-inner {
+      background: linear-gradient(145deg, rgba(34,211,165,0.1) 0%, rgba(34,211,165,0.04) 100%);
+      border-color: rgba(34,211,165,0.25);
+    }
+
+    .di .card-inner {
+      background: linear-gradient(145deg, rgba(96,165,250,0.1) 0%, rgba(96,165,250,0.04) 100%);
+      border-color: rgba(96,165,250,0.25);
+    }
+
+    .card-inner::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      opacity: 0.06;
+    }
+
+    .bercario .card-inner::before { background: var(--green); }
+    .di .card-inner::before { background: var(--blue); }
+
+    .card-area-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .bercario .card-area-badge {
+      background: rgba(34,211,165,0.15);
+      color: var(--green);
+      border: 1px solid rgba(34,211,165,0.3);
+    }
+
+    .di .card-area-badge {
+      background: rgba(96,165,250,0.15);
+      color: var(--blue);
+      border: 1px solid rgba(96,165,250,0.3);
+    }
+
+    .badge-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+      animation: blink 1.5s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .card-label {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 400;
+      margin-bottom: 6px;
+      position: relative;
+    }
+
+    .card-number {
+      font-family: var(--mono);
+      font-size: 88px;
+      font-weight: 600;
+      line-height: 1;
+      letter-spacing: -2px;
+      position: relative;
+    }
+
+    .bercario .card-number { color: var(--green); }
+    .di .card-number { color: var(--blue); }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid;
+      position: relative;
+    }
+
+    .bercario .card-footer { border-color: rgba(34,211,165,0.15); }
+    .di .card-footer { border-color: rgba(96,165,250,0.15); }
+
+    .card-time {
+      font-size: 12px;
+      color: var(--muted);
+      font-family: var(--mono);
+    }
+
+    .dismiss-btn {
+      padding: 7px 16px;
+      border-radius: 8px;
+      border: 1px solid;
+      background: transparent;
+      font-family: var(--font);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      letter-spacing: 0.02em;
+    }
+
+    .bercario .dismiss-btn {
+      color: var(--green);
+      border-color: rgba(34,211,165,0.3);
+    }
+
+    .bercario .dismiss-btn:hover {
+      background: rgba(34,211,165,0.1);
+    }
+
+    .di .dismiss-btn {
+      color: var(--blue);
+      border-color: rgba(96,165,250,0.3);
+    }
+
+    .di .dismiss-btn:hover {
+      background: rgba(96,165,250,0.1);
+    }
+
+    /* Bottom bar */
+    .bottombar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 36px;
+      border-top: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .count-info {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .count-info strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .hint {
+      font-size: 12px;
+      color: var(--muted);
+      opacity: 0.6;
+    }
+
+    /* Config warning */
+    .config-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    .config-box {
+      background: var(--surface2);
+      border: 1px solid rgba(251,191,36,0.3);
+      border-radius: 20px;
+      padding: 32px 40px;
+      max-width: 440px;
+      text-align: center;
+    }
+
+    .config-box h2 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #fbbf24;
+      margin-bottom: 10px;
+    }
+
+    .config-box p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand-dot"></div>
+      <span class="brand-name">Kids Call — Mídia</span>
+    </div>
+    <div class="topbar-right">
+      <div class="status-pill">
+        <div class="status-dot"></div>
+        <span id="status-label">Aguardando chamadas</span>
+      </div>
+      <div class="clock" id="clock">00:00</div>
+    </div>
+  </div>
+
+  <div class="stage" id="stage">
+    <div class="empty-state" id="empty-state">
+      <span class="empty-icon">📋</span>
+      <p class="empty-text">Nenhuma chamada ativa no momento</p>
+    </div>
+    <div class="cards-grid" id="cards-grid" style="display:none"></div>
+  </div>
+
+  <div class="bottombar">
+    <div class="count-info" id="count-info">
+      <strong>0</strong> chamadas ativas
+    </div>
+    <div class="hint">Clique em "Dispensar" quando os pais forem atendidos</div>
+  </div>
+
+  <div class="config-overlay" id="config-overlay" style="display:none">
+    <div class="config-box">
+      <h2>⚠️ Configuração necessária</h2>
+      <p>Edite o arquivo <strong>midia.html</strong> e insira sua URL e chave do Supabase antes de usar.</p>
+    </div>
+  </div>
+
+  <script>
+    // =============================================
+    // CONFIGURAÇÃO SUPABASE — edite aqui
+    // =============================================
+    const SUPABASE_URL = 'COLE_SUA_URL_AQUI'
+    const SUPABASE_KEY = 'COLE_SUA_ANON_KEY_AQUI'
+    // =============================================
+
+    let supabaseClient = null
+    let chamadas = []
+
+    function initClock() {
+      function tick() {
+        const now = new Date()
+        const h = String(now.getHours()).padStart(2, '0')
+        const m = String(now.getMinutes()).padStart(2, '0')
+        document.getElementById('clock').textContent = `${h}:${m}`
+      }
+      tick()
+      setInterval(tick, 10000)
+    }
+
+    function renderCards() {
+      const grid = document.getElementById('cards-grid')
+      const empty = document.getElementById('empty-state')
+      const countInfo = document.getElementById('count-info')
+      const status = document.getElementById('status-label')
+
+      if (chamadas.length === 0) {
+        grid.style.display = 'none'
+        empty.style.display = 'block'
+        countInfo.innerHTML = '<strong>0</strong> chamadas ativas'
+        status.textContent = 'Aguardando chamadas'
+      } else {
+        grid.style.display = 'flex'
+        empty.style.display = 'none'
+        const n = chamadas.length
+        countInfo.innerHTML = `<strong>${n}</strong> ${n === 1 ? 'chamada ativa' : 'chamadas ativas'}`
+        status.textContent = `${n} ${n === 1 ? 'chamada em andamento' : 'chamadas em andamento'}`
+
+        grid.innerHTML = chamadas.map(c => {
+          const cls = c.area === 'Berçário' ? 'bercario' : 'di'
+          const hora = new Date(c.created_at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+          return `
+            <div class="chamada-card ${cls}" id="card-${c.id}">
+              <div class="card-inner">
+                <div class="card-area-badge">
+                  <div class="badge-dot"></div>
+                  ${c.area}
+                </div>
+                <div class="card-label">Etiqueta nº</div>
+                <div class="card-number">${c.numero}</div>
+                <div class="card-footer">
+                  <span class="card-time">${hora}</span>
+                  <button class="dismiss-btn" onclick="dispensar('${c.id}')">Dispensar</button>
+                </div>
+              </div>
+            </div>
+          `
+        }).join('')
+      }
+    }
+
+    async function dispensar(id) {
+      const card = document.getElementById(`card-${id}`)
+      if (card) card.classList.add('saindo')
+
+      setTimeout(async () => {
+        try {
+          await supabaseClient.from('chamadas').update({ ativa: false }).eq('id', id)
+          chamadas = chamadas.filter(c => String(c.id) !== String(id))
+          renderCards()
+        } catch (e) {
+          console.error(e)
+        }
+      }, 350)
+    }
+
+    async function carregarChamadas() {
+      const { data, error } = await supabaseClient
+        .from('chamadas')
+        .select('*')
+        .eq('ativa', true)
+        .order('created_at', { ascending: true })
+
+      if (!error && data) {
+        chamadas = data
+        renderCards()
+      }
+    }
+
+    function assinarRealtime() {
+      supabaseClient
+        .channel('chamadas-realtime')
+        .on('postgres_changes', {
+          event: '*',
+          schema: 'public',
+          table: 'chamadas'
+        }, () => {
+          carregarChamadas()
+        })
+        .subscribe()
+    }
+
+    function init() {
+      initClock()
+
+      if (SUPABASE_URL === 'COLE_SUA_URL_AQUI') {
+        document.getElementById('config-overlay').style.display = 'flex'
+        return
+      }
+
+      supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+      carregarChamadas()
+      assinarRealtime()
+    }
+
+    init()
+  </script>
+</body>
+</html>

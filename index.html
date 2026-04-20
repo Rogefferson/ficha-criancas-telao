@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kids Call</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0e0f11;
+      --surface: #17191d;
+      --surface2: #1f2227;
+      --border: rgba(255,255,255,0.08);
+      --border2: rgba(255,255,255,0.14);
+      --text: #f0f0f0;
+      --muted: #6b7280;
+      --green: #22d3a5;
+      --green-dim: rgba(34,211,165,0.1);
+      --green-glow: rgba(34,211,165,0.25);
+      --blue: #60a5fa;
+      --blue-dim: rgba(96,165,250,0.1);
+      --blue-glow: rgba(96,165,250,0.25);
+      --font: 'DM Sans', sans-serif;
+    }
+
+    html, body {
+      min-height: 100dvh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 24px;
+    }
+
+    .wrap {
+      width: 100%;
+      max-width: 440px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 48px;
+    }
+
+    .header {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 14px var(--green-glow);
+      animation: breathe 2.5s ease-in-out infinite;
+    }
+
+    @keyframes breathe {
+      0%, 100% { box-shadow: 0 0 8px var(--green-glow); }
+      50% { box-shadow: 0 0 22px var(--green-glow), 0 0 40px rgba(34,211,165,0.12); }
+    }
+
+    .logo-name {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .header h1 {
+      font-size: 30px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      color: var(--text);
+    }
+
+    .header p {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 320px;
+    }
+
+    .cards {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .card-link {
+      display: block;
+      text-decoration: none;
+      border-radius: 20px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      padding: 24px 28px;
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-link::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .card-link.green::before { background: var(--green-dim); }
+    .card-link.blue::before { background: var(--blue-dim); }
+
+    .card-link:hover {
+      border-color: var(--border2);
+      transform: translateY(-2px);
+    }
+
+    .card-link.green:hover {
+      border-color: rgba(34,211,165,0.4);
+      box-shadow: 0 8px 32px var(--green-glow);
+    }
+
+    .card-link.blue:hover {
+      border-color: rgba(96,165,250,0.4);
+      box-shadow: 0 8px 32px var(--blue-glow);
+    }
+
+    .card-link:hover::before { opacity: 1; }
+
+    .card-link:active { transform: scale(0.98); }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      position: relative;
+    }
+
+    .card-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 99px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .green .card-badge {
+      background: rgba(34,211,165,0.15);
+      color: var(--green);
+      border: 1px solid rgba(34,211,165,0.3);
+    }
+
+    .blue .card-badge {
+      background: rgba(96,165,250,0.15);
+      color: var(--blue);
+      border: 1px solid rgba(96,165,250,0.3);
+    }
+
+    .badge-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .card-arrow {
+      font-size: 18px;
+      color: var(--muted);
+      transition: transform 0.2s, color 0.2s;
+      position: relative;
+    }
+
+    .green:hover .card-arrow { color: var(--green); transform: translate(3px, -3px); }
+    .blue:hover .card-arrow { color: var(--blue); transform: translate(3px, -3px); }
+
+    .card-title {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 4px;
+      position: relative;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+      position: relative;
+    }
+
+    .card-icon {
+      font-size: 20px;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      opacity: 0.15;
+    }
+
+    .footer {
+      font-size: 12px;
+      color: var(--muted);
+      opacity: 0.5;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <div class="header">
+      <div class="logo">
+        <div class="logo-dot"></div>
+        <span class="logo-name">Kids Call</span>
+      </div>
+      <h1>Selecione seu acesso</h1>
+      <p>Escolha abaixo de acordo com sua função durante o culto</p>
+    </div>
+
+    <div class="cards">
+
+      <a class="card-link green" href="tia.html">
+        <div class="card-top">
+          <span class="card-badge">
+            <span class="badge-dot"></span>
+            Berçário &amp; DI
+          </span>
+          <span class="card-arrow">↗</span>
+        </div>
+        <div class="card-title">Tia / Responsável</div>
+        <div class="card-desc">Envie chamadas para o telão sem sair do prédio. Abra pelo celular.</div>
+      </a>
+
+      <a class="card-link blue" href="midia.html">
+        <div class="card-top">
+          <span class="card-badge">
+            <span class="badge-dot"></span>
+            Sala de Mídia
+          </span>
+          <span class="card-arrow">↗</span>
+        </div>
+        <div class="card-title">Operador de Mídia</div>
+        <div class="card-desc">Painel do telão. Exibe as chamadas em tempo real. Abra no computador.</div>
+      </a>
+
+    </div>
+
+    <div class="footer">Mantenha esta página nos favoritos do seu dispositivo</div>
+
+  </div>
+</body>
+</html>
