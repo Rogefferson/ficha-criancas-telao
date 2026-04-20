@@ -369,11 +369,7 @@
   <div class="main">
     <div class="hero">
       <h1>Chamar pais</h1>
-      <p>Selecione a área e informe o número da etiqueta</p>
-    </div>
-
-    <div id="config-warning" class="config-warning" style="display:none">
-      Configure o Supabase no arquivo antes de usar.
+      <p>Selecione a área e informe o número da fixa</p>
     </div>
 
     <div>
@@ -382,18 +378,16 @@
         <button class="area-btn bercario" onclick="selectArea('Berçário')" id="btn-bercario">
           <span class="area-icon">🍼</span>
           <span class="area-name">Berçário</span>
-          <span class="area-sub">0 – 2 anos</span>
         </button>
         <button class="area-btn di" onclick="selectArea('DI')" id="btn-di">
           <span class="area-icon">🧸</span>
           <span class="area-name">DI</span>
-          <span class="area-sub">3 – 5 anos</span>
         </button>
       </div>
     </div>
 
     <div class="num-section">
-      <p class="section-label">Número da etiqueta</p>
+      <p class="section-label">Número da ficha</p>
       <div class="num-display" id="num-display">
         <div class="num-value empty" id="num-value">· · ·</div>
       </div>
@@ -414,7 +408,7 @@
       </div>
 
       <button class="send-btn" id="send-btn" disabled onclick="enviar()">
-        Chamar pais
+        Chamar responsáveis
       </button>
     </div>
   </div>
@@ -428,8 +422,8 @@
     // =============================================
     // CONFIGURAÇÃO SUPABASE — edite aqui
     // =============================================
-    const SUPABASE_URL = 'sb_publishable_He_Yx1i-Wk-YS7-x1KJGsg_iA6Oft4P'
-    const SUPABASE_KEY = 'sb_secret_fu6QHb9ddyJVZyWK5Hpb5w_WPEkLx21'
+    const SUPABASE_URL = 'https://uyilxlqdihrdvrnadvvs.supabase.co'
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV5aWx4bHFkaWhyZHZybmFkdnZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2NDM4NDYsImV4cCI6MjA5MjIxOTg0Nn0.KX2s5tcr8UgBzL57EkVbp6-iZl7wvfBwcz-3BWQm510'
     // =============================================
 
     let supabaseClient = null
@@ -437,7 +431,7 @@
     let numero = ''
 
     function initSupabase() {
-      if (SUPABASE_URL === 'sb_publishable_He_Yx1i-Wk-YS7-x1KJGsg_iA6Oft4P') {
+      if (SUPABASE_URL === 'https://uyilxlqdihrdvrnadvvs.supabase.co') {
         document.getElementById('config-warning').style.display = 'block'
         return
       }
@@ -513,7 +507,7 @@
         showToast('Erro ao enviar. Verifique a conexão.', 'error')
       }
 
-      btn.textContent = 'Chamar pais'
+      btn.textContent = 'Chamar responsáveis'
       updateSend()
     }
 
