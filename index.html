@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,26 +8,33 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     :root {
       --bg: #0e0f11;
       --surface: #17191d;
       --surface2: #1f2227;
-      --border: rgba(255,255,255,0.08);
-      --border2: rgba(255,255,255,0.14);
+      --border: rgba(255, 255, 255, 0.08);
+      --border2: rgba(255, 255, 255, 0.14);
       --text: #f0f0f0;
       --muted: #6b7280;
       --green: #22d3a5;
-      --green-dim: rgba(34,211,165,0.1);
-      --green-glow: rgba(34,211,165,0.25);
+      --green-dim: rgba(34, 211, 165, 0.1);
+      --green-glow: rgba(34, 211, 165, 0.25);
       --blue: #60a5fa;
-      --blue-dim: rgba(96,165,250,0.1);
-      --blue-glow: rgba(96,165,250,0.25);
+      --blue-dim: rgba(96, 165, 250, 0.1);
+      --blue-glow: rgba(96, 165, 250, 0.25);
       --font: 'DM Sans', sans-serif;
     }
 
-    html, body {
+    html,
+    body {
       min-height: 100dvh;
       background: var(--bg);
       color: var(--text);
@@ -63,7 +71,8 @@
     }
 
     .logo-dot {
-      width: 10px; height: 10px;
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
       background: var(--green);
       box-shadow: 0 0 14px var(--green-glow);
@@ -71,8 +80,15 @@
     }
 
     @keyframes breathe {
-      0%, 100% { box-shadow: 0 0 8px var(--green-glow); }
-      50% { box-shadow: 0 0 22px var(--green-glow), 0 0 40px rgba(34,211,165,0.12); }
+
+      0%,
+      100% {
+        box-shadow: 0 0 8px var(--green-glow);
+      }
+
+      50% {
+        box-shadow: 0 0 22px var(--green-glow), 0 0 40px rgba(34, 211, 165, 0.12);
+      }
     }
 
     .logo-name {
@@ -125,8 +141,13 @@
       transition: opacity 0.2s;
     }
 
-    .card-link.green::before { background: var(--green-dim); }
-    .card-link.blue::before { background: var(--blue-dim); }
+    .card-link.green::before {
+      background: var(--green-dim);
+    }
+
+    .card-link.blue::before {
+      background: var(--blue-dim);
+    }
 
     .card-link:hover {
       border-color: var(--border2);
@@ -134,18 +155,22 @@
     }
 
     .card-link.green:hover {
-      border-color: rgba(34,211,165,0.4);
+      border-color: rgba(34, 211, 165, 0.4);
       box-shadow: 0 8px 32px var(--green-glow);
     }
 
     .card-link.blue:hover {
-      border-color: rgba(96,165,250,0.4);
+      border-color: rgba(96, 165, 250, 0.4);
       box-shadow: 0 8px 32px var(--blue-glow);
     }
 
-    .card-link:hover::before { opacity: 1; }
+    .card-link:hover::before {
+      opacity: 1;
+    }
 
-    .card-link:active { transform: scale(0.98); }
+    .card-link:active {
+      transform: scale(0.98);
+    }
 
     .card-top {
       display: flex;
@@ -168,19 +193,20 @@
     }
 
     .green .card-badge {
-      background: rgba(34,211,165,0.15);
+      background: rgba(34, 211, 165, 0.15);
       color: var(--green);
-      border: 1px solid rgba(34,211,165,0.3);
+      border: 1px solid rgba(34, 211, 165, 0.3);
     }
 
     .blue .card-badge {
-      background: rgba(96,165,250,0.15);
+      background: rgba(96, 165, 250, 0.15);
       color: var(--blue);
-      border: 1px solid rgba(96,165,250,0.3);
+      border: 1px solid rgba(96, 165, 250, 0.3);
     }
 
     .badge-dot {
-      width: 5px; height: 5px;
+      width: 5px;
+      height: 5px;
       border-radius: 50%;
       background: currentColor;
     }
@@ -192,8 +218,15 @@
       position: relative;
     }
 
-    .green:hover .card-arrow { color: var(--green); transform: translate(3px, -3px); }
-    .blue:hover .card-arrow { color: var(--blue); transform: translate(3px, -3px); }
+    .green:hover .card-arrow {
+      color: var(--green);
+      transform: translate(3px, -3px);
+    }
+
+    .blue:hover .card-arrow {
+      color: var(--blue);
+      transform: translate(3px, -3px);
+    }
 
     .card-title {
       font-size: 20px;
@@ -226,6 +259,7 @@
     }
   </style>
 </head>
+
 <body>
   <div class="wrap">
 
@@ -235,7 +269,7 @@
         <span class="logo-name">Kids Call</span>
       </div>
       <h1>Selecione seu acesso</h1>
-      <p>Escolha abaixo de acordo com sua função durante o culto</p>
+      <p>Escolha abaixo de acordo com sua função durante o culto ou Rhema</p>
     </div>
 
     <div class="cards">
@@ -248,8 +282,8 @@
           </span>
           <span class="card-arrow">↗</span>
         </div>
-        <div class="card-title">Tia / Responsável</div>
-        <div class="card-desc">Envie chamadas para o telão sem sair do prédio. Abra pelo celular.</div>
+        <div class="card-title">Tios / Tias</div>
+        <div class="card-desc">Envie chamadas para o telão sem sair da sala. Chame pelo celular.</div>
       </a>
 
       <a class="card-link blue" href="midia.html">
@@ -260,8 +294,8 @@
           </span>
           <span class="card-arrow">↗</span>
         </div>
-        <div class="card-title">Operador de Mídia</div>
-        <div class="card-desc">Painel do telão. Exibe as chamadas em tempo real. Abra no computador.</div>
+        <div class="card-title">Mídia</div>
+        <div class="card-desc">Painel para chamada no telão. Abra no celular, notebook ou computador.</div>
       </a>
 
     </div>
@@ -270,4 +304,5 @@
 
   </div>
 </body>
+
 </html>
