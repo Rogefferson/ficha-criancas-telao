@@ -415,6 +415,24 @@
         <span id="status-label">Aguardando chamadas</span>
       </div>
       <div class="clock" id="clock">00:00</div>
+      <button id="som-btn" onclick="ativarSom()" style="
+        background: transparent;
+        border: 1px solid var(--border2);
+        border-radius: 99px;
+        color: var(--muted);
+        font-family: var(--font);
+        font-size: 12px;
+        font-weight: 500;
+        padding: 6px 14px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.15s;
+      ">
+        <span id="som-icon">🔇</span>
+        <span id="som-label">Ativar som</span>
+      </button>
     </div>
   </div>
 
@@ -530,7 +548,9 @@
       }
     }
 
-    async function carregarChamadas() {
+    let primeiroCarregamento = true
+
+    async function carregarChamadas(tocar = false) {
       const { data, error } = await supabaseClient
         .from('chamadas')
         .select('*')
@@ -538,8 +558,54 @@
         .order('created_at', { ascending: true })
 
       if (!error && data) {
+        const novas = data.filter(d => !chamadas.some(c => c.id === d.id))
         chamadas = data
         renderCards()
+        if (!primeiroCarregamento && novas.length > 0) {
+          tocarSom()
+        }
+        primeiroCarregamento = false
+      }
+    }
+
+    let somAtivo = false
+
+    function ativarSom() {
+      somAtivo = !somAtivo
+      document.getElementById('som-icon').textContent = somAtivo ? '🔔' : '🔇'
+      document.getElementById('som-label').textContent = somAtivo ? 'Som ativo' : 'Ativar som'
+      document.getElementById('som-btn').style.borderColor = somAtivo ? 'var(--green)' : 'var(--border2)'
+      document.getElementById('som-btn').style.color = somAtivo ? 'var(--green)' : 'var(--muted)'
+      if (somAtivo) {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)()
+        ctx.resume()
+      }
+    }
+
+    function tocarSom() {
+      if (!somAtivo) return
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)()
+
+        const beep = (freq, start, duration, vol = 0.4) => {
+          const osc = ctx.createOscillator()
+          const gain = ctx.createGain()
+          osc.connect(gain)
+          gain.connect(ctx.destination)
+          osc.type = "sine"
+          osc.frequency.setValueAtTime(freq, ctx.currentTime + start)
+          gain.gain.setValueAtTime(0, ctx.currentTime + start)
+          gain.gain.linearRampToValueAtTime(vol, ctx.currentTime + start + 0.01)
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + start + duration)
+          osc.start(ctx.currentTime + start)
+          osc.stop(ctx.currentTime + start + duration)
+        }
+
+        beep(880, 0,    0.12)
+        beep(1100, 0.15, 0.12)
+        beep(1320, 0.30, 0.2)
+      } catch (e) {
+        console.warn("Som não disponível:", e)
       }
     }
 
