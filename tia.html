@@ -128,6 +128,7 @@
       text-align: center;
       overflow: hidden;
       -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
 
     .area-btn::before {
@@ -259,6 +260,7 @@
       position: relative;
       overflow: hidden;
       user-select: none;
+      touch-action: manipulation;
     }
 
     .key:active {
@@ -290,6 +292,7 @@
       margin-top: 12px;
       letter-spacing: -0.01em;
       -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
 
     .send-btn:disabled {
@@ -343,6 +346,16 @@
       background: currentColor;
     }
 
+    .config-warning {
+      background: rgba(251, 191, 36, 0.1);
+      border: 1px solid rgba(251, 191, 36, 0.3);
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 13px;
+      color: #fbbf24;
+      text-align: center;
+      line-height: 1.4;
+    }
   </style>
 </head>
 
@@ -357,6 +370,10 @@
     <div class="hero">
       <h1>Chamar pais</h1>
       <p>Selecione a área e informe o número da etiqueta</p>
+    </div>
+
+    <div id="config-warning" class="config-warning" style="display:none">
+      Configure o Supabase no arquivo antes de usar.
     </div>
 
     <div>
@@ -411,8 +428,8 @@
     // =============================================
     // CONFIGURAÇÃO SUPABASE — edite aqui
     // =============================================
-    const SUPABASE_URL = 'https://uyilxlqdihrdvrnadvvs.supabase.co'
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV5aWx4bHFkaWhyZHZybmFkdnZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2NDM4NDYsImV4cCI6MjA5MjIxOTg0Nn0.KX2s5tcr8UgBzL57EkVbp6-iZl7wvfBwcz-3BWQm510'
+    const SUPABASE_URL = 'sb_publishable_He_Yx1i-Wk-YS7-x1KJGsg_iA6Oft4P'
+    const SUPABASE_KEY = 'sb_secret_fu6QHb9ddyJVZyWK5Hpb5w_WPEkLx21'
     // =============================================
 
     let supabaseClient = null
@@ -420,6 +437,10 @@
     let numero = ''
 
     function initSupabase() {
+      if (SUPABASE_URL === 'sb_publishable_He_Yx1i-Wk-YS7-x1KJGsg_iA6Oft4P') {
+        document.getElementById('config-warning').style.display = 'block'
+        return
+      }
       supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
     }
 
