@@ -1,34 +1,43 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kids Call — Mídia</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@600&display=swap"
+    rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     :root {
       --bg: #080a0d;
       --surface: #0f1215;
       --surface2: #161a1f;
-      --border: rgba(255,255,255,0.07);
-      --border2: rgba(255,255,255,0.13);
+      --border: rgba(255, 255, 255, 0.07);
+      --border2: rgba(255, 255, 255, 0.13);
       --text: #f4f4f5;
       --muted: #52525b;
       --green: #22d3a5;
-      --green-dim: rgba(34,211,165,0.08);
-      --green-glow: rgba(34,211,165,0.3);
+      --green-dim: rgba(34, 211, 165, 0.08);
+      --green-glow: rgba(34, 211, 165, 0.3);
       --blue: #60a5fa;
-      --blue-dim: rgba(96,165,250,0.08);
-      --blue-glow: rgba(96,165,250,0.3);
+      --blue-dim: rgba(96, 165, 250, 0.08);
+      --blue-glow: rgba(96, 165, 250, 0.3);
       --font: 'DM Sans', sans-serif;
       --mono: 'DM Mono', monospace;
     }
 
-    html, body {
+    html,
+    body {
       height: 100%;
       width: 100%;
       background: var(--bg);
@@ -60,7 +69,8 @@
     }
 
     .brand-dot {
-      width: 9px; height: 9px;
+      width: 9px;
+      height: 9px;
       border-radius: 50%;
       background: var(--green);
       box-shadow: 0 0 12px var(--green-glow);
@@ -68,8 +78,15 @@
     }
 
     @keyframes breathe {
-      0%, 100% { box-shadow: 0 0 8px var(--green-glow); }
-      50% { box-shadow: 0 0 20px var(--green-glow), 0 0 40px rgba(34,211,165,0.15); }
+
+      0%,
+      100% {
+        box-shadow: 0 0 8px var(--green-glow);
+      }
+
+      50% {
+        box-shadow: 0 0 20px var(--green-glow), 0 0 40px rgba(34, 211, 165, 0.15);
+      }
     }
 
     .brand-name {
@@ -99,7 +116,8 @@
     }
 
     .status-dot {
-      width: 6px; height: 6px;
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
       background: var(--green);
     }
@@ -130,7 +148,9 @@
     }
 
     @keyframes fadeIn {
-      to { opacity: 1; }
+      to {
+        opacity: 1;
+      }
     }
 
     .empty-icon {
@@ -173,6 +193,7 @@
         opacity: 0;
         transform: scale(0.85) translateY(20px);
       }
+
       to {
         opacity: 1;
         transform: scale(1) translateY(0);
@@ -199,26 +220,33 @@
     }
 
     .bercario .card-inner {
-      background: linear-gradient(145deg, rgba(34,211,165,0.1) 0%, rgba(34,211,165,0.04) 100%);
-      border-color: rgba(34,211,165,0.25);
+      background: linear-gradient(145deg, rgba(34, 211, 165, 0.1) 0%, rgba(34, 211, 165, 0.04) 100%);
+      border-color: rgba(34, 211, 165, 0.25);
     }
 
     .di .card-inner {
-      background: linear-gradient(145deg, rgba(96,165,250,0.1) 0%, rgba(96,165,250,0.04) 100%);
-      border-color: rgba(96,165,250,0.25);
+      background: linear-gradient(145deg, rgba(96, 165, 250, 0.1) 0%, rgba(96, 165, 250, 0.04) 100%);
+      border-color: rgba(96, 165, 250, 0.25);
     }
 
     .card-inner::before {
       content: '';
       position: absolute;
-      top: -60px; right: -60px;
-      width: 180px; height: 180px;
+      top: -60px;
+      right: -60px;
+      width: 180px;
+      height: 180px;
       border-radius: 50%;
       opacity: 0.06;
     }
 
-    .bercario .card-inner::before { background: var(--green); }
-    .di .card-inner::before { background: var(--blue); }
+    .bercario .card-inner::before {
+      background: var(--green);
+    }
+
+    .di .card-inner::before {
+      background: var(--blue);
+    }
 
     .card-area-badge {
       display: inline-flex;
@@ -235,27 +263,35 @@
     }
 
     .bercario .card-area-badge {
-      background: rgba(34,211,165,0.15);
+      background: rgba(34, 211, 165, 0.15);
       color: var(--green);
-      border: 1px solid rgba(34,211,165,0.3);
+      border: 1px solid rgba(34, 211, 165, 0.3);
     }
 
     .di .card-area-badge {
-      background: rgba(96,165,250,0.15);
+      background: rgba(96, 165, 250, 0.15);
       color: var(--blue);
-      border: 1px solid rgba(96,165,250,0.3);
+      border: 1px solid rgba(96, 165, 250, 0.3);
     }
 
     .badge-dot {
-      width: 5px; height: 5px;
+      width: 5px;
+      height: 5px;
       border-radius: 50%;
       background: currentColor;
       animation: blink 1.5s ease-in-out infinite;
     }
 
     @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.3;
+      }
     }
 
     .card-label {
@@ -275,8 +311,13 @@
       position: relative;
     }
 
-    .bercario .card-number { color: var(--green); }
-    .di .card-number { color: var(--blue); }
+    .bercario .card-number {
+      color: var(--green);
+    }
+
+    .di .card-number {
+      color: var(--blue);
+    }
 
     .card-footer {
       display: flex;
@@ -288,8 +329,13 @@
       position: relative;
     }
 
-    .bercario .card-footer { border-color: rgba(34,211,165,0.15); }
-    .di .card-footer { border-color: rgba(96,165,250,0.15); }
+    .bercario .card-footer {
+      border-color: rgba(34, 211, 165, 0.15);
+    }
+
+    .di .card-footer {
+      border-color: rgba(96, 165, 250, 0.15);
+    }
 
     .card-time {
       font-size: 12px;
@@ -312,20 +358,20 @@
 
     .bercario .dismiss-btn {
       color: var(--green);
-      border-color: rgba(34,211,165,0.3);
+      border-color: rgba(34, 211, 165, 0.3);
     }
 
     .bercario .dismiss-btn:hover {
-      background: rgba(34,211,165,0.1);
+      background: rgba(34, 211, 165, 0.1);
     }
 
     .di .dismiss-btn {
       color: var(--blue);
-      border-color: rgba(96,165,250,0.3);
+      border-color: rgba(96, 165, 250, 0.3);
     }
 
     .di .dismiss-btn:hover {
-      background: rgba(96,165,250,0.1);
+      background: rgba(96, 165, 250, 0.1);
     }
 
     /* Bottom bar */
@@ -354,40 +400,9 @@
       opacity: 0.6;
     }
 
-    /* Config warning */
-    .config-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.85);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 100;
-    }
-
-    .config-box {
-      background: var(--surface2);
-      border: 1px solid rgba(251,191,36,0.3);
-      border-radius: 20px;
-      padding: 32px 40px;
-      max-width: 440px;
-      text-align: center;
-    }
-
-    .config-box h2 {
-      font-size: 18px;
-      font-weight: 600;
-      color: #fbbf24;
-      margin-bottom: 10px;
-    }
-
-    .config-box p {
-      font-size: 14px;
-      color: var(--muted);
-      line-height: 1.6;
-    }
   </style>
 </head>
+
 <body>
 
   <div class="topbar">
@@ -419,19 +434,12 @@
     <div class="hint">Clique em "Dispensar" quando os pais forem atendidos</div>
   </div>
 
-  <div class="config-overlay" id="config-overlay" style="display:none">
-    <div class="config-box">
-      <h2>⚠️ Configuração necessária</h2>
-      <p>Edite o arquivo <strong>midia.html</strong> e insira sua URL e chave do Supabase antes de usar.</p>
-    </div>
-  </div>
-
   <script>
     // =============================================
     // CONFIGURAÇÃO SUPABASE — edite aqui
     // =============================================
-    const SUPABASE_URL = 'COLE_SUA_URL_AQUI'
-    const SUPABASE_KEY = 'COLE_SUA_ANON_KEY_AQUI'
+    const SUPABASE_URL = 'https://uyilxlqdihrdvrnadvvs.supabase.co'
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV5aWx4bHFkaWhyZHZybmFkdnZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2NDM4NDYsImV4cCI6MjA5MjIxOTg0Nn0.KX2s5tcr8UgBzL57EkVbp6-iZl7wvfBwcz-3BWQm510'
     // =============================================
 
     let supabaseClient = null
@@ -532,12 +540,6 @@
 
     function init() {
       initClock()
-
-      if (SUPABASE_URL === 'COLE_SUA_URL_AQUI') {
-        document.getElementById('config-overlay').style.display = 'flex'
-        return
-      }
-
       supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
       carregarChamadas()
       assinarRealtime()
@@ -546,4 +548,5 @@
     init()
   </script>
 </body>
+
 </html>
